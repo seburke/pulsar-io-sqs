@@ -13,7 +13,7 @@ You can get the SQS source connector using one of the following methods.
 
 ## Use it with Function Worker
 
-- Download the NAR package from [here](https://github.com/streamnative/pulsar-io-sqs/releases/download/v{{connector:version}}/pulsar-io-sqs-{{connector:version}}.nar).
+- Download the NAR package from [here](https://github.com/streamnative/pulsar-io-sqs/releases/download/v2.9.0-rc-202107231254/pulsar-io-sqs-2.9.0-rc-202107231254.nar).
 
 - Build it from the source code.
 
@@ -33,7 +33,7 @@ You can get the SQS source connector using one of the following methods.
 
      ```bash
      ls target
-     pulsar-io-sqs-{{connector:version}}.nar
+     pulsar-io-sqs-2.9.0-rc-202107231254.nar
      ```
 
 ## Use it with Function Mesh
@@ -66,7 +66,7 @@ You can create a configuration file (JSON or YAML) to set the properties as belo
         "namespace": "default",
         "name": "sqs-source",
         "topicName": "test-queue-pulsar",
-        "archive": "connectors/pulsar-io-sqs-{{connector:version}}.nar",
+        "archive": "connectors/pulsar-io-sqs-2.9.0-rc-202107231254.nar",
         "parallelism": 1,
         "configs":
         {
@@ -86,7 +86,7 @@ You can create a configuration file (JSON or YAML) to set the properties as belo
    namespace: "default"
    name: "sqs-source"
    topicName: "test-queue-pulsar"
-   archive: "connectors/pulsar-io-sqs-{{connector:version}}.nar"
+   archive: "connectors/pulsar-io-sqs-2.9.0-rc-202107231254.nar"
    parallelism: 1
 
    configs:
@@ -109,7 +109,7 @@ kind: Source
 metadata:
   name: sqs-source-sample
 spec:
-  image: streamnative/pulsar-io-sqs:{{connector:version}}
+  image: streamnative/pulsar-io-sqs:2.9.0-rc-202107231254
   className: org.apache.pulsar.ecosystem.io.sqs.SQSSource
   replicas: 1
   maxReplicas: 1
@@ -132,7 +132,7 @@ spec:
     cpu: "0.1"
     memory: 1G
   java:
-    jar: connectors/pulsar-io-sqs-{{connector:version}}.nar
+    jar: connectors/pulsar-io-sqs-2.9.0-rc-202107231254.nar
   clusterName: test-pulsar
 ```
 
@@ -152,7 +152,7 @@ This example shows how to create an SQS source connector on a Pulsar cluster usi
 
 ```
 PULSAR_HOME/bin/pulsar-admin sources create \
---archive pulsar-io-sqs-{{connector:version}}.nar \
+--archive pulsar-io-sqs-2.9.0-rc-202107231254.nar \
 --source-config-file sqs-source-config.yaml \
 --classname org.apache.pulsar.ecosystem.io.sqs.SQSSource \
 --name sqs-source
@@ -173,7 +173,7 @@ This example describes how to use the SQS source connector to feed data from SQS
 2. Copy the NAR package to the Pulsar connectors directory.
  
     ```
-    cp pulsar-io-sqs-{{connector:version}}.nar PULSAR_HOME/connectors/pulsar-io-sqs-{{connector:version}}.nar
+    cp pulsar-io-sqs-2.9.0-rc-202107231254.nar PULSAR_HOME/connectors/pulsar-io-sqs-2.9.0-rc-202107231254.nar
     ```
 
 3. Start Pulsar in standalone mode.
@@ -211,7 +211,7 @@ This example explains how to create an SQS source connector in an on-premises cl
 1. Copy the NAR package of the SQS connector to the Pulsar connectors directory.
 
     ```
-    cp pulsar-io-sqs-{{connector:version}}.nar $PULSAR_HOME/connectors/pulsar-io-sqs-{{connector:version}}.nar
+    cp pulsar-io-sqs-2.9.0-rc-202107231254.nar $PULSAR_HOME/connectors/pulsar-io-sqs-2.9.0-rc-202107231254.nar
     ```
 
 2. Reload all [built-in connectors](https://pulsar.apache.org/docs/en/next/io-connectors/).
@@ -263,7 +263,7 @@ This example demonstrates how to create an SQS source connector through Function
     metadata:
     name: sqs-source-sample
     spec:
-    image: streamnative/pulsar-io-sqs:{{connector:version}}
+    image: streamnative/pulsar-io-sqs:2.9.0-rc-202107231254
     className: org.apache.pulsar.ecosystem.io.sqs.SQSSource
     replicas: 1
     maxReplicas: 1
@@ -286,7 +286,7 @@ This example demonstrates how to create an SQS source connector through Function
         cpu: "0.1"
         memory: 1G
     java:
-        jar: connectors/pulsar-io-sqs-{{connector:version}}.nar
+        jar: connectors/pulsar-io-sqs-2.9.0-rc-202107231254.nar
     clusterName: test-pulsar
     ```
 
