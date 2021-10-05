@@ -97,6 +97,10 @@ public class SQSRecord implements Record<String> {
 
     @Override
     public Optional<String> getDestinationTopic() {
-        return Optional.of(destination);
+        if (msg.getMessageAttributes().containsKey(SQSUtils.PULSAR_TOPIC_ATTRIBUTE)) {
+            return Optional.of(msg.getMessageAttributes().get(SQSUtils.PULSAR_TOPIC_ATTRIBUTE).getStringValue());
+        } else {
+            return Optional.of(destination);
+        }
     }
 }
