@@ -58,6 +58,8 @@ public class SQSSourceIntegrationTest extends AbstractAwsConnector {
 
     @Test
     public void testSQSSourcePushMsgToPulsar() throws IOException {
+        //empty attribute map
+        Map<String, MessageAttributeValue> attributeMap = new HashMap<>();
 
         // prepare sqs client
         try {
@@ -67,11 +69,42 @@ public class SQSSourceIntegrationTest extends AbstractAwsConnector {
         }
 
         // send test messages to SQS
-        produceMessagesToSQS();
+        produceMessagesToSQS(attributeMap);
 
         // test if source pushed message to pulsar successfully
         try {
             validateSourceResult();
+        } catch (Exception e) {
+            Assert.assertNull("validate source result should not throw exception", e);
+        }
+
+        // clean up
+        cleanupSQSClient();
+    }
+
+    @Test
+    public void testSQSSourcePushMsqToPulsarWithTopicAttribute() throws IOException {
+        //non-default pulsar topic attribute map
+        String otherPulsarTopic = "test-sqs-source-topic-other";
+        Map<String, MessageAttributeValue> attributeMap = new HashMap<>();
+
+        attributeMap.put(SQSUtils.PULSAR_TOPIC_ATTRIBUTE, new MessageAttributeValue()
+                    .withDataType("String")
+                    .withStringValue(otherPulsarTopic));
+
+        // prepare sqs client
+        try {
+            prepareSQSClient();
+        } catch (Exception e) {
+            Assert.assertNull("prepare sqs client should not throw exception", e);
+        }
+
+        // send test messages to SQS
+        produceMessagesToSQS(attributeMap);
+
+        // test if source pushed message to pulsar successfully
+        try {
+            validateSourceResult(otherPulsarTopic);
         } catch (Exception e) {
             Assert.assertNull("validate source result should not throw exception", e);
         }
@@ -100,7 +133,7 @@ public class SQSSourceIntegrationTest extends AbstractAwsConnector {
         client = null;
     }
 
-    public void produceMessagesToSQS() {
+    public void produceMessagesToSQS(Map<String, MessageAttributeValue> attributeMap) {
         for (int i = 0; i < 100; i++) {
             final SendMessageRequest request = new SendMessageRequest();
             request.withMessageBody(MSG + i).withQueueUrl(queueUrl);
@@ -109,6 +142,10 @@ public class SQSSourceIntegrationTest extends AbstractAwsConnector {
     }
 
     public void validateSourceResult() throws Exception {
+        validateSourceResult(PULSAR_TOPIC);
+    }
+
+    public void validateSourceResult(String pulsarTopic) throws Exception {
         @Cleanup
         PulsarClient pulsarClient = PulsarClient.builder()
                 .serviceUrl("http://localhost:8080")
@@ -116,7 +153,7 @@ public class SQSSourceIntegrationTest extends AbstractAwsConnector {
 
         @Cleanup
         Consumer<byte[]> pulsarConsumer = pulsarClient.newConsumer()
-                .topic(PULSAR_TOPIC)
+                .topic(pulsarTopic)
                 .subscriptionName(PULSAR_SUB_NAME)
                 .subscriptionInitialPosition(SubscriptionInitialPosition.Earliest)
                 .subscribe();
