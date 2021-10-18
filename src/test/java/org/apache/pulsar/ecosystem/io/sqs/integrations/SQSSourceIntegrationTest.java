@@ -87,7 +87,6 @@ public class SQSSourceIntegrationTest extends AbstractAwsConnector {
         //non-default pulsar topic attribute map
         String otherPulsarTopic = "test-sqs-source-topic-other";
         Map<String, MessageAttributeValue> attributeMap = new HashMap<>();
-
         attributeMap.put(SQSUtils.PULSAR_TOPIC_ATTRIBUTE, new MessageAttributeValue()
                     .withDataType("String")
                     .withStringValue(otherPulsarTopic));
@@ -136,7 +135,9 @@ public class SQSSourceIntegrationTest extends AbstractAwsConnector {
     public void produceMessagesToSQS(Map<String, MessageAttributeValue> attributeMap) {
         for (int i = 0; i < 100; i++) {
             final SendMessageRequest request = new SendMessageRequest();
-            request.withMessageBody(MSG + i).withQueueUrl(queueUrl);
+            request.withMessageBody(MSG + i)
+                    .withQueueUrl(queueUrl)
+                    .withMessageAttributes(attributeMap);
             client.sendMessage(request);
         }
     }
