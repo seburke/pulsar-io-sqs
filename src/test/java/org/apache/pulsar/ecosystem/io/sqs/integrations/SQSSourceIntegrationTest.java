@@ -22,8 +22,11 @@ import static org.apache.pulsar.ecosystem.io.sqs.SQSTestUtils.getTestConfig;
 import static org.apache.pulsar.ecosystem.io.sqs.SQSTestUtils.purgeSQSQueue;
 
 import com.amazonaws.services.sqs.buffered.AmazonSQSBufferedAsyncClient;
+import com.amazonaws.services.sqs.model.MessageAttributeValue;
 import com.amazonaws.services.sqs.model.SendMessageRequest;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import lombok.Cleanup;
